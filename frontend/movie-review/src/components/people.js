@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Box, List, Link } from "@material-ui/core";
 import PostReview from "./postReview";
+import ReviewList from "./reviewList";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -68,17 +69,17 @@ export default function People() {
             .then(response => setPeople(response))
             .catch(() => { window.location.href = "/" });
 
-        fetch("https://api.themoviedb.org/3/person/"+query+"/movie_credits?api_key=bb78e4cf3442e302d928f2c5edcdbee1")
-        .then(response => response.json())
-        .then(response => {
-            if ((response.cast).length > 8) {
-                setMovies((response.cast).slice(0, 8));
-            }
-            else {
-                setMovies(response.cast);
-            }
-        })
-        .catch(() => { window.location.href = "/" });
+        fetch("https://api.themoviedb.org/3/person/" + query + "/movie_credits?api_key=bb78e4cf3442e302d928f2c5edcdbee1")
+            .then(response => response.json())
+            .then(response => {
+                if ((response.cast).length > 8) {
+                    setMovies((response.cast).slice(0, 8));
+                }
+                else {
+                    setMovies(response.cast);
+                }
+            })
+            .catch(() => { window.location.href = "/" });
 
     }, [])
 
@@ -86,7 +87,7 @@ export default function People() {
 
 
     return (
-        
+
         <div className={classes.container}>
             <Box display="flex" className={classes.box} justifyContent="flex-start">
                 <Box p={1}>
@@ -94,7 +95,7 @@ export default function People() {
                 </Box>
                 <Box p={1}>
                     <Typography variant="h3" gutterBottom className={classes.title}>{person ? person.name : ""}</Typography>
-                    <Typography variant="subtitle1" gutterBottom className={classes.role}> {person ? person.known_for_department: ""} </Typography>
+                    <Typography variant="subtitle1" gutterBottom className={classes.role}> {person ? person.known_for_department : ""} </Typography>
                     <Typography variant="subtitle1" gutterBottom className={classes.plot}>{person ? person.biography : ""}</Typography>
                 </Box>
             </Box>
@@ -112,8 +113,7 @@ export default function People() {
                 <Box p={1}>
 
                     <PostReview type="people" />
-                    {/*  <Typography> post reviews and review list gose here</Typography>
-                   <ReviewList type="movie" />*/}
+                    <ReviewList type="people" />
                 </Box>
             </Box>
         </div>

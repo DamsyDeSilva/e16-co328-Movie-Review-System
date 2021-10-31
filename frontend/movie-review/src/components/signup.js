@@ -32,25 +32,33 @@ export default function Signup() {
             password: data.get('password'),
 
         }
-        console.log(JSON.stringify(newUser));
-        
-        fetch(baseUrl + "users", {
+
+        console.log("req body : " + JSON.stringify(newUser));
+
+        fetch(baseUrl + "users/signup", {
             method: "POST",
             body: JSON.stringify(newUser),
             headers: {
                 "Content-Type": "application/json"
             },
-            
+
         })
-        .then(response => {
-            if(response.ok){
-                return response;
-            }
-        })
-        .then(response => response.json())
-        .then(alert("Success fully Registered! "))
-        .then(window.location.href="/signin")
-        
+            .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                    error.response = response;
+                    throw error;
+                }
+            },
+                error => {
+                    throw error;
+                }
+            )
+            .then(response => response.json())
+            .then(alert("Signed Up"))
+            .catch(error => { console.log(error.message); alert('Unsuccess Sign Up\nError: ' + error.message); });
 
     };
 
@@ -72,7 +80,7 @@ export default function Signup() {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Box component="form"  onSubmit={handleSubmit} sx={{ mt: 3 }}>
                     <Grid container spacing={5}>
                         <Grid item xs={12} sm={6}>
                             <TextField
